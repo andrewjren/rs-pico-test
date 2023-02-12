@@ -1,12 +1,15 @@
 [package]
 edition = "2021"
-name = "rp2040-project-template"
+name = "rp-pico-playpen"
 version = "0.1.0"
 
 [dependencies]
 cortex-m = "0.7"
 cortex-m-rt = "0.7"
 embedded-hal = { version = "0.2.4", features = ["unproven"] }
+embedded-hal-async = { version = "0.2.0-alpha.0" }
+embedded-io = { version = "0.4.0", features = ["async", "defmt"] }
+heapless = "0.7.15"
 fugit = "0.3.6"
 embedded-time = "0.12.0"
 embedded-graphics-core = {version = "0.3.2", optional = true}
@@ -23,6 +26,26 @@ rp-pico = "0.5.0"
 # rp2040-boot2 = "0.2"
 #[target.'cfg(unix)'.dev-dependencies]
 epd-waveshare = "0.5.0"
+
+cyw43 = { features = ["defmt","firmware-logs"] }
+embassy-executor = { version = "0.1.0",  features = ["defmt", "integrated-timers"] }
+embassy-time = { version = "0.1.0",  features = ["defmt", "defmt-timestamp-uptime"] }
+embassy-rp = { version = "0.1.0",  features = ["defmt", "unstable-traits", "nightly", "unstable-pac", "time-driver"] }
+embassy-net = { version = "0.1.0", features = ["defmt", "tcp", "dhcpv4", "medium-ethernet", "unstable-traits", "nightly"] }
+atomic-polyfill = "0.1.5"
+static_cell = "1.0"
+
+[patch.crates-io]
+embassy-executor = { git = "https://github.com/embassy-rs/embassy", rev = "771806be790a2758f1314d6460defe7c2f0d3e99" }
+embassy-time = { git = "https://github.com/embassy-rs/embassy", rev = "771806be790a2758f1314d6460defe7c2f0d3e99" }
+embassy-futures = { git = "https://github.com/embassy-rs/embassy", rev = "771806be790a2758f1314d6460defe7c2f0d3e99" }
+embassy-sync = { git = "https://github.com/embassy-rs/embassy", rev = "771806be790a2758f1314d6460defe7c2f0d3e99" }
+embassy-rp = { git = "https://github.com/embassy-rs/embassy", rev = "771806be790a2758f1314d6460defe7c2f0d3e99" }
+embassy-net = { git = "https://github.com/embassy-rs/embassy", rev = "771806be790a2758f1314d6460defe7c2f0d3e99" }
+embassy-net-driver = { git = "https://github.com/embassy-rs/embassy", rev = "771806be790a2758f1314d6460defe7c2f0d3e99" }
+embassy-net-driver-channel = { git = "https://github.com/embassy-rs/embassy", rev = "771806be790a2758f1314d6460defe7c2f0d3e99" }
+cyw43 = { git = "https://github.com/embassy-rs/cyw43" }
+
 #
 # cargo build/run
 [profile.dev]

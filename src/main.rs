@@ -3,12 +3,16 @@
 //! This will blink an LED attached to GP25, which is the pin the Pico uses for the on-board LED.
 #![no_std]
 #![no_main]
+#![feature(type_alias_impl_trait)]
+#![feature(async_fn_in_trait)]
+#![allow(incomplete_features)]
 
 use cortex_m_rt::entry;
 use defmt::*;
 use defmt_rtt as _;
 use embedded_graphics::{
     mono_font::MonoTextStyleBuilder,
+    image::ImageRaw,
     image::Image,
     pixelcolor::BinaryColor,
     prelude::*,
@@ -136,6 +140,22 @@ fn main() -> ! {
         .draw(&mut display);
     epd.update_frame(&mut spi, &display.buffer(), &mut delay);
     epd.display_frame(&mut spi, &mut delay);
+
+    const DATA: &[u8] = &[
+    0b11101111, 0b0101_0000,
+    0b10001000, 0b0101_0000,
+    0b11101011, 0b0101_0000,
+    0b10001001, 0b0101_0000,
+    0b11101111, 0b0101_0000,
+    ];
+
+    let raw_image = ImageRaw::<BinaryColor>::new(DATA, 12);
+    let image = Image::new(&raw_image, Point::zero())
+        .draw(&mut display);
+    epd.update_frame(&mut spi, &display.buffer(), &mut delay);
+    epd.display_frame(&mut spi, &mut delay);
+
+
     /*
     for i in 0..(WIDTH / 10) as i32 {
         Line::new(Point::new(i * 10, 0), Point::new(i * 10, HEIGHT as i32))
